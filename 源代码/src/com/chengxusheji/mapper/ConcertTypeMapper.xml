@@ -1,0 +1,48 @@
+﻿<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace命名空间，为了对sql语句进行隔离，方便管理，mapper开发dao方式，使用namespace有特殊作用  
+mapper代理开发时将namespace指定为mapper接口的全限定名  
+ -->
+<mapper namespace="com.chengxusheji.mapper.ConcertTypeMapper"> 
+<!--在mapper.xml文件中配置很多的sql语句，执行每个sql语句时，封装为MappedStatement对象 
+mapper.xml以statement为单位管理sql语句  
+ -->
+	<!-- 添加演唱会分类记录 -->
+	<insert id="addConcertType" parameterType="concertType">
+		insert into t_concertType(typeName) values 
+		(#{typeName})
+	</insert>
+
+	<!-- 按照查询条件分页查询演唱会分类记录 -->
+	<select id="queryConcertType" resultMap="concertTypeMap" >
+		select t_concertType.* from t_concertType ${where} limit #{startIndex},#{pageSize}
+	</select>
+	<resultMap id="concertTypeMap" type="concertType">
+        <id property="typeId" column="typeId" />
+    </resultMap>
+
+    <!-- 按照查询条件查询所有演唱会分类记录 -->
+	<select id="queryConcertTypeList" resultMap="concertTypeMap" >
+		select t_concertType.* from t_concertType ${where}
+	</select>
+
+    <!-- 按照查询条件的演唱会分类记录数 -->
+	<select id="queryConcertTypeCount" resultType="int">
+		select count(*) from t_concertType ${where}
+	</select>
+
+	<!-- 根据主键查询某个演唱会分类记录 -->
+	<select id="getConcertType" parameterType="int" resultMap="concertTypeMap">
+		select * from t_concertType where t_concertType.typeId = #{typeId}
+	</select>
+
+	<!-- 更新演唱会分类记录 -->
+	<update id="updateConcertType" parameterType="concertType">
+		update t_concertType set typeName=#{typeName} where typeId = #{typeId}
+	</update>
+
+	<!-- 删除演唱会分类记录 -->
+	<delete id="deleteConcertType" parameterType="int">
+		delete from t_concertType where typeId=#{typeId}
+	</delete>
+
+</mapper>
